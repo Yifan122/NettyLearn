@@ -6,6 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
 
+import java.util.concurrent.TimeUnit;
+
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     // 读取信息
     /*
@@ -14,6 +16,27 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+
+        // 异步提交task到eventloop中
+        ctx.channel().eventLoop().execute(() -> {
+            try {
+                Thread.sleep(3000);
+                ctx.writeAndFlush(Unpooled.copiedBuffer("异步任务结束", CharsetUtil.UTF_8));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+        // 提交定时任务
+        ctx.channel().eventLoop().schedule(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("定时5秒执行");
+            }
+        }, 5000, TimeUnit.MILLISECONDS);
+
+
         System.out.println("服务器读取线程" + Thread.currentThread().getName());
         System.out.println("server ctx =" + ctx);
 
