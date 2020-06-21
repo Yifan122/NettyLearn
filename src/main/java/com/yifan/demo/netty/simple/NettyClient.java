@@ -1,4 +1,4 @@
-package com.yifan.demo.netty;
+package com.yifan.demo.netty.simple;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
