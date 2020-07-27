@@ -1,0 +1,9 @@
+syntax = "proto3";
+option java_outer_classname = "StudentPOJO"; // 外部类的类名
+
+// protoc.exe --java_out=. Student.proto
+message Student {// 内部类
+  int32 id = 1; //属性的序号
+  string name = 2;
+
+}
